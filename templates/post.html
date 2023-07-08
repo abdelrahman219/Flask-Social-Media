@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% from 'macros.html' import render_field %}
+
+{% block content %}
+<form method="POST" action="" class="mt-5">
+	{{ form.hidden_tag() }}
+
+	{% for field in form %}
+	{% if field.name == 'content' %}
+	<div class="form-group text-light">
+		<label for="{{ field.id }}">Content:</label>
+		{{ render_field(field) }}
+	</div>
+	{% elif field.name == 'privacy' %}
+	<div class="form-group text-light">
+		<label for="{{ field.id }}">Privacy:</label>
+		{{ render_field(field) }}
+	</div>
+	{% else %}
+	<div class="form-group text-light">
+		{{ render_field(field) }}
+	</div>
+	{% endif %}
+	{% endfor %}
+
+	<div class="d-flex justify-content-end">
+		<button type="submit" id="submit" class="btn btn-primary">Post</button>
+	</div>
+</form>
+{% endblock %}

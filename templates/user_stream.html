@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container mt-5">
+	<div class="row">
+		<div class="col-md-6">
+			<h1 class="text-light">{{ user.username }}</h1>
+		</div>
+		<div class="col-md-6">
+			<div class="d-flex justify-content-end">
+				<p class="text-light me-4">Posts: {{ user.posts.count() }}</p>
+				<p class="text-light">Friends: {{ user.friends.count() }}</p>
+			</div>
+		</div>
+	</div>
+	<hr class="text-light">
+	<div class="row">
+		<div class="col-md-12">
+			<h3 class="text-light mb-3">Posts by {{ user.username }}</h3>
+			{% if user.posts.count() > 0 %}
+			<div class="list-group ">
+				{% for post in user.posts %}
+				{% if post.privacy == 'public' or (current_user.is_authenticated and (post.privacy == 'friends_only' or
+				post.user == current_user)) %}
+				<div class="list-group-item text-light my-2" style="background-color: #15202b; border-color: #415f7d;">
+					<div class="d-flex justify-content-between">
+						<small class="text-light">{{ post.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</small>
+						<p class="text-light">Privacy: {{ post.privacy }}</p>
+					</div>
+					<p class="text-light mb-1">{{ post.content }}</p>
+				</div>
+				{% endif %}
+				{% endfor %}
+			</div>
+			{% else %}
+			<p class="text-light">No posts found.</p>
+			{% endif %}
+		</div>
+		<div class="grid-25">
+			{% if current_user.is_authenticated %}
+			{% if user != current_user %}
+
+			{% if friends %}
+			<a href="{{ url_for('unfriend', username=user.username) }}" class="small btn btn-danger">Unfriend</a>
+			{% else %}
+			<a href="{{ url_for('send_friend_request', username=user.username) }}" class="small btn btn-primary">Send
+				Friend Request</a>
+			{% endif %}
+
+			{% endif %}
+			{% endif %}
+		</div>
+	</div>
+</div>
+{% endblock %}

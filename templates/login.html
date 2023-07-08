@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% from 'macros.html' import render_field %}
+
+{% block content %}
+<div class="container">
+	<div class="row justify-content-center">
+		<div class="col-lg-6" style="width: 400px;">
+			<div class="card mt-5 text-light" style="background-color: #15202b;">
+				<div class="card-body">
+					<h2 class="card-title text-light">Login</h2>
+					<form method="POST" action="" class="form">
+						{{ form.csrf_token }}
+
+						{% for field in form if field.name != 'csrf_token' %}
+						<div class="form-group text-light">
+							<label for="{{ field.id }}" class="form-label">{{ field.label.text }}:</label>
+							{{ render_field(field) }}
+						</div>
+						{% endfor %}
+
+						<button type="submit" class="btn btn-primary my-3">Login</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

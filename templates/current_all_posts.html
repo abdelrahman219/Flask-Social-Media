@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+{% for post in posts %}
+<article class="card mb-3 tweet-card" style="background-color: #15202b;">
+    <div class="card-header d-flex justify-content-between align-items-center ">
+        <h2 class="tweet-username">
+            <a href="{{ url_for('stream', username=post.user.username) }}" class="text-decoration-none text-primary">{{
+                post.user.username }}</a>
+        </h2>
+        <p class="tweet-privacy text-light">Privacy: {{ post.privacy }}</p>
+    </div>
+    <div class="card-body text-light">
+        <p class="tweet-content">{{ post.content }}</p>
+    </div>
+    <div class="card-footer d-flex justify-content-between align-items-center">
+        {% if post.user == current_user %}
+        <!-- Add edit button -->
+        <form method="POST" action="{{ url_for('edit_post', post_id=post.id) }}">
+            <input type="hidden" name="_method" value="PUT">
+            <button type="submit" class="btn btn-primary btn-sm">Edit</button>
+        </form>
+        {% endif %}
+        <!-- Add delete button -->
+        <form method="POST" action="{{ url_for('delete_post', post_id=post.id) }}">
+            <input type="hidden" name="_method" value="DELETE">
+            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+        </form>
+    </div>
+</article>
+{% endfor %}
+{% endblock %}
